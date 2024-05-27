@@ -1,11 +1,20 @@
 import { useEffect, useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  View,
+  FlatList,
+  SafeAreaView,
+  Text,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+
 import Title from "../components/ui/title";
 import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
-import { Ionicons } from "@expo/vector-icons";
 import InstructionText from "../components/ui/instructionText";
 import Card from "../components/ui/Card";
+import Colors from "../utils/colors";
 
 const generateRandomBetween = (min, max, exclude) => {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -18,25 +27,36 @@ const generateRandomBetween = (min, max, exclude) => {
 };
 let minBoundary = 1;
 let maxBoundary = 100;
-export default GameScreen = ({ userNumber, setGameOver }) => {
+// let count = 0;
+export default GameScreen = ({ userNumber, setGameOver, countGuess }) => {
   const initialGuess = generateRandomBetween(
     minBoundary,
     maxBoundary,
     userNumber
   );
   const [currentGuess, SetCurrentGuess] = useState(initialGuess);
+  const [countRounds, setGuessRounds] = useState([initialGuess]);
 
   useEffect(() => {
     if (currentGuess === userNumber) {
       setGameOver();
+      // count = 0;
     }
   }, [currentGuess, userNumber, setGameOver]);
 
+  useEffect(() => {
+    maxBoundary = 1;
+    maxBoundary = 100;
+  }, []);
+
   const nextGuessHandler = (direction) => {
+    // count++;
+    // console.log(count);
+    // countGuess(count);
     console.log(direction);
     if (
-      (direction === "lower" && currentGuess < userNumber) ||
-      (direction === "greater" && currentGuess > userNumber)
+      (direction == "lower" && currentGuess <= userNumber) ||
+      (direction == "greater" && currentGuess >= userNumber)
     ) {
       Alert.alert("Dont Lie! you know that this is wrong...");
       return;
@@ -54,6 +74,7 @@ export default GameScreen = ({ userNumber, setGameOver }) => {
     );
 
     SetCurrentGuess(newRndNumber);
+    setGuessRounds((prevGuessRounds) => [newRndNumber, ...prevGuessRounds]);
   };
   return (
     <View style={styles.screen}>
@@ -79,6 +100,20 @@ export default GameScreen = ({ userNumber, setGameOver }) => {
           </View>
         </Card>
       </View>
+      <View>
+        {/* {countRounds.map((guessRound) => {
+          return <Text key={guessRound}>{guessRound}</Text>;
+        })} */}
+        <SafeAreaView style={styles.containerTries}>
+          <FlatList
+            data={countRounds}
+            renderItem={(itemData) => {
+              return <Text style={styles.cardNumber}>{itemData.item}</Text>;
+            }}
+            keyExtractor={(item) => item}
+          />
+        </SafeAreaView>
+      </View>
     </View>
   );
 };
@@ -99,5 +134,19 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 50,
+  },
+  containerTries: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  cardNumber: {
+    backgroundColor: Colors.primary500,
+    width: 140,
+    margin: 3,
+    borderRadius: 25,
+    color: "white",
+    fontFamily: "open-sans",
+    textAlign: "center",
   },
 });
