@@ -1,9 +1,11 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
-import Title from "../components/ui/title";
 import { useEffect, useState } from "react";
+import { Alert, StyleSheet, View } from "react-native";
+import Title from "../components/ui/title";
 import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import { Ionicons } from "@expo/vector-icons";
 import InstructionText from "../components/ui/instructionText";
+import Card from "../components/ui/Card";
 
 const generateRandomBetween = (min, max, exclude) => {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -55,27 +57,28 @@ export default GameScreen = ({ userNumber, setGameOver }) => {
   };
   return (
     <View style={styles.screen}>
-      <Title>Opponents Guess</Title>
+      <Title style={styles.title}>Opponents Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <View>
-        <InstructionText style={styles.InstructionText}>
-          Higher or lower?
-        </InstructionText>
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-              -
-            </PrimaryButton>
-          </View>
+        <Card>
+          <InstructionText style={styles.InstructionText}>
+            Higher or lower?
+          </InstructionText>
+          <View style={styles.buttonsContainer}>
+            <View style={styles.buttonContainer}>
+              <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
+                <Ionicons name="remove-circle-outline" size={24} />
+              </PrimaryButton>
+            </View>
 
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-              +
-            </PrimaryButton>
+            <View style={styles.buttonContainer}>
+              <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
+                <Ionicons name="add-circle-outline" size={24} />
+              </PrimaryButton>
+            </View>
           </View>
-        </View>
+        </Card>
       </View>
-      <Text>Log ROUNDS</Text>
     </View>
   );
 };
@@ -93,5 +96,8 @@ const styles = StyleSheet.create({
   },
   InstructionText: {
     marginBottom: 12,
+  },
+  title: {
+    marginTop: 50,
   },
 });

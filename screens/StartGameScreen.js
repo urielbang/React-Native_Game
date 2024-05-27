@@ -31,7 +31,6 @@ export default function StartGameScreen({ onConfirmNumber }) {
   return (
     <View style={styles.rootContainer}>
       <Title>Guess My Number</Title>
-
       <Card>
         <InstructionText>Enter a Number</InstructionText>
         <TextInput
@@ -77,6 +76,11 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     marginTop: 100,
+    alignItems: "center",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
   },
 });
