@@ -6,6 +6,7 @@ import {
   FlatList,
   SafeAreaView,
   Text,
+  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -15,6 +16,7 @@ import PrimaryButton from "../components/ui/PrimaryButton";
 import InstructionText from "../components/ui/instructionText";
 import Card from "../components/ui/Card";
 import Colors from "../utils/colors";
+import GuessLogItem from "../components/game/GuessLogItem";
 
 const generateRandomBetween = (min, max, exclude) => {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -28,7 +30,7 @@ const generateRandomBetween = (min, max, exclude) => {
 let minBoundary = 1;
 let maxBoundary = 100;
 // let count = 0;
-export default GameScreen = ({ userNumber, setGameOver, countGuess }) => {
+export default GameScreen = ({ userNumber, setGameOver }) => {
   const initialGuess = generateRandomBetween(
     minBoundary,
     maxBoundary,
@@ -39,7 +41,8 @@ export default GameScreen = ({ userNumber, setGameOver, countGuess }) => {
 
   useEffect(() => {
     if (currentGuess === userNumber) {
-      setGameOver();
+      setGameOver(countRounds.length);
+
       // count = 0;
     }
   }, [currentGuess, userNumber, setGameOver]);
@@ -50,9 +53,6 @@ export default GameScreen = ({ userNumber, setGameOver, countGuess }) => {
   }, []);
 
   const nextGuessHandler = (direction) => {
-    // count++;
-    // console.log(count);
-    // countGuess(count);
     console.log(direction);
     if (
       (direction == "lower" && currentGuess <= userNumber) ||
@@ -76,6 +76,8 @@ export default GameScreen = ({ userNumber, setGameOver, countGuess }) => {
     SetCurrentGuess(newRndNumber);
     setGuessRounds((prevGuessRounds) => [newRndNumber, ...prevGuessRounds]);
   };
+
+  const guessRoundsListLength = countRounds.length;
   return (
     <View style={styles.screen}>
       <Title style={styles.title}>Opponents Guess</Title>
@@ -100,19 +102,19 @@ export default GameScreen = ({ userNumber, setGameOver, countGuess }) => {
           </View>
         </Card>
       </View>
-      <View>
-        {/* {countRounds.map((guessRound) => {
-          return <Text key={guessRound}>{guessRound}</Text>;
-        })} */}
-        <SafeAreaView style={styles.containerTries}>
-          <FlatList
-            data={countRounds}
-            renderItem={(itemData) => {
-              return <Text style={styles.cardNumber}>{itemData.item}</Text>;
-            }}
-            keyExtractor={(item) => item}
-          />
-        </SafeAreaView>
+      <View style={styles.containerTries}>
+        <FlatList
+          data={countRounds}
+          renderItem={(itemData) => {
+            return (
+              <GuessLogItem
+                roundNumber={guessRoundsListLength - itemData.index}
+                guess={itemData.item}
+              />
+            );
+          }}
+          keyExtractor={(item) => item}
+        />
       </View>
     </View>
   );
@@ -136,9 +138,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   containerTries: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
+    flex: 1,
+    padding: 16,
   },
   cardNumber: {
     backgroundColor: Colors.primary500,

@@ -5,6 +5,7 @@ import { useState } from "react";
 import Colors from "../utils/colors";
 import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/instructionText";
+import GuessLogItem from "../components/game/GuessLogItem";
 
 export default function StartGameScreen({ onConfirmNumber }) {
   const [enteredNumber, setEnteredNumber] = useState("");
@@ -31,6 +32,7 @@ export default function StartGameScreen({ onConfirmNumber }) {
   return (
     <View style={styles.rootContainer}>
       <Title>Guess My Number</Title>
+
       <Card>
         <InstructionText>Enter a Number</InstructionText>
         <TextInput
