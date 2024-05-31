@@ -3,7 +3,7 @@
     "name": "udemy-Course",
     "slug": "udemy-Course",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -24,8 +24,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font"
-    ]
+    "plugins": ["expo-font"],
+    "extra": {
+      "eas": {
+        "projectId": "10420e76-b498-4f5d-b8cf-efc4e4ea348b"
+      }
+    }
   }
 }

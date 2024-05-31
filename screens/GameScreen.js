@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Alert,
-  StyleSheet,
-  View,
-  FlatList,
-  SafeAreaView,
-  Text,
-  ScrollView,
-} from "react-native";
+import { Alert, StyleSheet, View, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import Title from "../components/ui/title";
@@ -124,6 +116,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
+    alignItems: "center",
   },
   buttonsContainer: {
     flexDirection: "row",
