@@ -1,4 +1,12 @@
-import { View, Image, StyleSheet, Text, Dimensions } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Text,
+  Dimensions,
+  ScrollView,
+  useWindowDimensions,
+} from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Title from "../components/ui/title";
 import Colors from "../utils/colors";
@@ -8,32 +16,51 @@ export default function GameOverScreen({
   roundsNumber,
   userNumber,
 }) {
+  const { width, height } = useWindowDimensions();
+
+  let imageSize = 300;
+
+  if (width < 380) {
+    imageSize = 150;
+  }
+
+  if (height < 400) {
+    imageSize = 80;
+  }
+  const imageStyle = {
+    width: imageSize,
+    height: imageSize,
+    borderRadius: imageSize / 2,
+  };
+
   return (
-    <View style={styles.rootContainer}>
-      <Title>GAME OVER!</Title>
-      <View style={styles.containerImage}>
-        <Image
-          style={styles.image}
-          source={require("../assets/images/success.png")}
-        />
+    <ScrollView style={styles.screen}>
+      <View style={styles.rootContainer}>
+        <Title>GAME OVER!</Title>
+        <View style={[styles.containerImage, imageStyle]}>
+          <Image
+            style={styles.image}
+            source={require("../assets/images/success.png")}
+          />
+        </View>
+        <Text style={styles.summaryText}>
+          Your phone needed<Text style={styles.highLight}>{roundsNumber}</Text>{" "}
+          rounds to guess the number
+          <Text style={styles.highLight}>{userNumber}</Text>
+        </Text>
+        <PrimaryButton onPress={onStartGame}>Start New Game</PrimaryButton>
       </View>
-      <Text style={styles.summaryText}>
-        Your phone needed<Text style={styles.highLight}>{roundsNumber}</Text>{" "}
-        rounds to guess the number
-        <Text style={styles.highLight}>{userNumber}</Text>
-      </Text>
-      <PrimaryButton onPress={onStartGame}>Start New Game</PrimaryButton>
-    </View>
+    </ScrollView>
   );
 }
 
-const deviceWidth = Dimensions.get("screen").width;
+// const deviceWidth = Dimensions.get("screen").width;
 
 const styles = StyleSheet.create({
   containerImage: {
-    borderRadius: 150,
-    width: deviceWidth < 300 ? 150 : 300,
-    height: deviceWidth < 300 ? 150 : 300,
+    // borderRadius: 150,
+    // width: deviceWidth < 300 ? 150 : 300,
+    // height: deviceWidth < 300 ? 150 : 300,
     borderWidth: 3,
     borderColor: Colors.primary600,
     overflow: "hidden",
@@ -58,5 +85,8 @@ const styles = StyleSheet.create({
   highLight: {
     fontFamily: "open-sans-bold",
     color: Colors.primary500,
+  },
+  screen: {
+    flex: 1,
   },
 });
