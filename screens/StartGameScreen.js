@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   },
   rootContainer: {
     flex: 1,
-    marginTop: marginTop,
+
     alignItems: "center",
   },
   container: {
